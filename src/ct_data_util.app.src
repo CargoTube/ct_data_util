@@ -1,0 +1,15 @@
+{application, ct_data_util,
+ [{description, "CargoTube Data Utils"},
+  {vsn, "semver"},
+  {registered, []},
+  {applications,
+   [kernel,
+    stdlib,
+    mnesia
+   ]},
+  {env,[]},
+  {modules, []},
+  {maintainers, []},
+  {licenses, []},
+  {links, []}
+ ]}.
