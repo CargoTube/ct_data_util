@@ -65,18 +65,16 @@ get_table_version(Table) ->
     maybe_get_table_version(Table, MaybeCon).
 
 maybe_get_table_version(Table, {ok, Con}) ->
-    Result = esqlite3:q("SELECT version FROM ctdatainfo WHERE name = ?",
-                        [Table], Con),
+    Sql = "SELECT version FROM ctdatainfo WHERE name = ?",
+    Result = esqlite3:q(Sql, [Table], Con),
     handle_version_result(Result);
 maybe_get_table_version(_Table, _NoCon) ->
     {error, not_connected}.
 
 handle_version_result([]) ->
-    {error, not_found};
-handle_version_result([Version]) ->
-    {ok, Version};
+    ok;
 handle_version_result(Other) ->
-    Other.
+    {error, Other}.
 
 
 set_table_version(Table, Version) ->
@@ -85,18 +83,16 @@ set_table_version(Table, Version) ->
 
 
 maybe_set_table_version(Table,  Version, {ok, Con}) ->
-    Result = esqlite3:q("INSERT INTO ctdatainfo (name, version) VALUES (?, ?)",
-                        [Table, Version], Con),
+    Sql = "INSERT OR REPLACE INTO ctdatainfo (name, version) VALUES (?, ?)",
+    Result = esqlite3:q(Sql, [Table, Version], Con),
     handle_set_version_result(Result);
 maybe_set_table_version(_Table, _Version, _NoCon) ->
     {error, not_connected}.
 
 handle_set_version_result([]) ->
     {error, not_found};
-handle_set_version_result([Version]) ->
-    {ok, Version};
-handle_set_version_result(Other) ->
-    Other.
+handle_set_version_result([{Version}]) ->
+    {ok, Version}.
 
 
 get_sqlite_connection() ->
