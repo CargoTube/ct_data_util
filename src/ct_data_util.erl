@@ -72,9 +72,9 @@ maybe_get_table_version(_Table, _NoCon) ->
     {error, not_connected}.
 
 handle_version_result([]) ->
-    ok;
-handle_version_result(Other) ->
-    {error, Other}.
+    {error, not_found};
+handle_version_result([{Version}]) ->
+    {ok, Version}.
 
 
 set_table_version(Table, Version) ->
@@ -90,9 +90,9 @@ maybe_set_table_version(_Table, _Version, _NoCon) ->
     {error, not_connected}.
 
 handle_set_version_result([]) ->
-    {error, not_found};
-handle_set_version_result([{Version}]) ->
-    {ok, Version}.
+    ok;
+handle_set_version_result(Other) ->
+    {error, Other}.
 
 
 get_sqlite_connection() ->
