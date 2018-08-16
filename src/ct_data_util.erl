@@ -85,7 +85,7 @@ set_table_version(Table, Version) ->
 
 
 maybe_set_table_version(Table,  Version, {ok, Con}) ->
-    Result = esqlite3:q("INSERT INTO ctdatainfo (table, version) VALUES (?, ?)",
+    Result = esqlite3:q("INSERT INTO ctdatainfo (name, version) VALUES (?, ?)",
                         [Table, Version], Con),
     handle_set_version_result(Result);
 maybe_set_table_version(_Table, _Version, _NoCon) ->
