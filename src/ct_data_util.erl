@@ -1,11 +1,15 @@
 -module(ct_data_util).
 
--define(DBDIR, "db").
+-define(MNESIADIR, "dbmnesia").
+-define(SQLITE, "cargotube.sqlite").
 
 -export([
          stop_mnesia/0,
          start_mnesia/0,
-         create_mnesia_schema_if_needed/0
+         create_mnesia_schema_if_needed/0,
+
+         setup_sqlite_if_needed/0,
+         get_sqlite_connection/0
         ]).
 
 stop_mnesia() ->
@@ -33,4 +37,21 @@ create_mnesia_schema_if_needed(false) ->
     ok.
 
 mnesia_dir() ->
-    application:get_env(ct_data_util, mnesia_dir, ?DBDIR).
+    application:get_env(ct_data_util, mnesia_dir, ?MNESIADIR).
+
+
+setup_sqlite_if_needed() ->
+    IsConfigured = application:get_env(ct_data_util, sqlite_connection),
+    setup_sqlite_if_needed(IsConfigured).
+
+
+setup_sqlite_if_needed(undefined) ->
+    SqliteFile = application:get_env(ct_data_util, mnesia_dir, ?SQLITE),
+    {ok, Connection} = esqlite:open(SqliteFile),
+    application:set_env(ct_data_util, sqlite_connection, Connection),
+    ok;
+setup_sqlite_if_needed({ok, _}) ->
+    ok.
+
+get_sqlite_connection() ->
+    application:get_env(ct_data_util, sqlite_connection).

@@ -1,0 +1,6 @@
+{"1.1.0",
+[{<<"esqlite">>,{pkg,<<"esqlite">>,<<"0.2.4">>},0}]}.
+[
+{pkg_hash,[
+ {<<"esqlite">>, <<"3A8A352C190AFE2D6B828B252A6FBFF65B5CC1124647F38B15BDAB3BF6FD4B3E">>}]}
+].
