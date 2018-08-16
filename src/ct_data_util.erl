@@ -48,6 +48,9 @@ setup_sqlite_if_needed() ->
 setup_sqlite_if_needed(undefined) ->
     SqliteFile = application:get_env(ct_data_util, mnesia_dir, ?SQLITE),
     {ok, Connection} = esqlite3:open(SqliteFile),
+    Sql = "CREATE TABLE IF NOT EXIST ctdatainfo ( name NOT NULL UNIQUE"
+        ", version NOT NULL)",
+    true = is_integer(esqlite3:exec(Sql, Connection)),
     application:set_env(ct_data_util, sqlite_connection, Connection),
     ok;
 setup_sqlite_if_needed({ok, _}) ->
