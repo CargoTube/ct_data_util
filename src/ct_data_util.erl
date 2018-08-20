@@ -1,7 +1,7 @@
 -module(ct_data_util).
 
--define(MNESIADIR, "dbmnesia").
--define(SQLITE, "cargotube.sqlite").
+-define(MNESIADIR, "db/mnesia").
+-define(SQLITE, "db/cargotube.sqlite").
 
 -export([
          stop_mnesia/0,
