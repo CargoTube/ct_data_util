@@ -27,6 +27,7 @@ start_mnesia() ->
 
 create_mnesia_schema_if_needed() ->
     Dir = mnesia_dir(),
+    ok = filelib:ensure_dir(Dir),
     DirExists = filelib:is_dir(Dir),
     create_mnesia_schema_if_needed(DirExists).
 
@@ -50,6 +51,7 @@ setup_sqlite_if_needed() ->
 
 setup_sqlite_if_needed(undefined) ->
     SqliteFile = application:get_env(ct_data_util, mnesia_dir, ?SQLITE),
+    ok = filelib:ensure_dir(SqliteFile),
     {ok, Connection} = esqlite3:open(SqliteFile),
     Sql = "CREATE TABLE IF NOT EXISTS ctdatainfo ( name TEXT PRIMARY KEY"
         ", version REAL NOT NULL)",
